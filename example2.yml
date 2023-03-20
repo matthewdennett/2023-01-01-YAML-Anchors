@@ -1,0 +1,36 @@
+---
+- name: Example 2
+  hosts: localhost
+  gather_facts: false
+  vars:
+
+    app1_vars: &app1_vars
+      environment: production
+      servers:
+        - server1
+
+    app2_vars: &app2_vars
+      environment: staging
+      servers:
+        - server2
+    # Define a list using the alias
+    app_list1:
+      - <<: *app1_vars
+      - <<: *app2_vars
+
+    # Define a list with YAML variables
+    app_list2:
+      - "{{app1_vars}}"
+      - "{{app2_vars}}"
+
+
+  tasks:
+    # Use the variables in tasks
+    - name: Print App List 1
+      debug:
+        var: app_list1
+
+    - name: Print App List 2
+      debug:
+        var: app_list2
+...

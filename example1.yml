@@ -1,0 +1,37 @@
+---
+- name: Example 1
+  hosts: localhost
+  gather_facts: false
+  vars:
+    # Define an anchor called "common_vars"
+    common_vars: &common_vars
+      version: 2.0
+      name: My Application
+      servers:
+        - server1
+
+    # Define a variable that uses the "common_vars" anchor and adds additional information
+    app1_vars:
+      <<: *common_vars
+      environment: production
+      servers:
+        - prod_svr1
+        - prod_svr2
+
+    # Define another variable that uses the "common_vars" anchor and adds additional information
+    app2_vars:
+      <<: *common_vars
+      environment: staging
+      servers:
+        - stg_svr1
+
+  tasks:
+    # Use the variables in tasks
+    - name: Print app 1
+      debug:
+        var: app1_vars
+
+    - name: Print app 2
+      debug:
+        var: app2_vars
+...
